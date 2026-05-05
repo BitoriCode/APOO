@@ -198,21 +198,12 @@ classDiagram
     InMemoryTaskRepository "1" o-- "0..*" Task : gestiona
 ```
 
-### Puntos para explicar en clase
-
-* **POO + dataclass:** `Task` con estado/validación (`__post_init__`).
-* **Herencia (ABC):** `TaskRepository` como contrato → `InMemoryTaskRepository` lo implementa.
-* **Desacoplamiento (DIP + DI):** `TaskService` depende del contrato, se inyecta la implementación.
-* **Type hints 3.12+:** `list[...]`, `dict[...]`, uniones `|`.
-* **Comprehensions:** filtros, rankings y estadísticas en una línea.
-
 ---
 
 # Parte B — EduEnroll (Plataforma de matrículas)
 
 Sistema completo que combina **ABC**, **Protocol**, **DI/DIP**, **dataclasses** y **comprehensions** en un solo ejemplo.
 
-> Diagrama de clases detallado: [`CLASS_DIAGRAM.md`](CLASS_DIAGRAM.md)
 
 ### Piezas del dominio
 
@@ -493,23 +484,8 @@ if __name__ == "__main__":
         s = srepo.get(sid)
         print(f" - {(s.name if s else f'#{sid}')}: ${total:.2f}")
 ```
-
 ---
 
-## Retos
 
-1. **Nueva regla:** `EarlyBirdRule` (20% si `course.id < 200`) y combínala en `ComboRule`.
-2. **Repositorio de cursos (ABC)** y úsalo en un reporte dentro de `EnrollmentService`.
-3. **Nuevo protocolo:** `ReceiptRenderer` con `render(enrollment, student, course) -> str` y dos implementaciones (texto y JSON).
-4. **Testing con fakes:** crea `FakeNotifier` que acumule mensajes y verifica que `enroll()` envía la notificación correcta.
-5. **Excepción personalizada:** reemplaza `ValueError` por `StudentNotFound(DomainError)` con una jerarquía propia.
 
----
 
-## Referencias
-
-- Diagrama de clases EduEnroll: [`CLASS_DIAGRAM.md`](CLASS_DIAGRAM.md)
-- Teoría DI/DIP: [`teoria/5.3 inyeccion_de_dependencias_y_DIP.md`](../teoria/5.3%20inyeccion_de_dependencias_y_DIP.md)
-- Teoría Protocolos: [`teoria/5.2 protocolos_e_interfaces.md`](../teoria/5.2%20protocolos_e_interfaces.md)
-- Ejemplo DI/DIP: [`ejemplos/6. inyeccion_dependencias_y_DIP.md`](6.%20inyeccion_dependencias_y_DIP.md)
-- Ejemplo Protocolos: [`ejemplos/5. protocolos_e_interfaces.md`](5.%20protocolos_e_interfaces.md)
