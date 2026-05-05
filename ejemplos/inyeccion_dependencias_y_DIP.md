@@ -1,6 +1,5 @@
 # 6. Inyección de Dependencias y DIP
 
-> **Tema de teoría:** [`teoria/5.3 inyeccion_de_dependencias_y_DIP.md`](../teoria/inyeccion_de_dependencias_y_DIP.md)
 
 **Objetivo:** aprender a **desacoplar** servicios de sus detalles concretos usando **Protocol** (contrato estructural), **ABC** (contrato nominal) e **inyección de dependencias** (DI) junto con el **Principio de Inversión de Dependencias** (DIP).
 
