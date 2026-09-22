@@ -47,7 +47,6 @@ BaseException
     ├── KeyError
     ├── IndexError
     ├── AttributeError
-    ├── FileNotFoundError
     ├── ZeroDivisionError
     ├── ImportError
     │   └── ModuleNotFoundError
@@ -412,7 +411,7 @@ def obtener_producto(catalogo: dict[str, Producto], codigo: str) -> Producto:
 
 En Python, **EAFP es el estilo preferido** por la comunidad. La razón es doble:
 
-1. **Evita condiciones de carrera:** En LBYL, entre la verificación y la acción algo podría cambiar (otro hilo podría modificar el estado). Con EAFP, la operación es atómica.
+1. **Reduce la ventana de error:** En LBYL, entre la verificación y la acción podría ocurrir un cambio de estado (especialmente relevante en código con múltiples hilos). EAFP elimina esa ventana: la verificación y la acción ocurren como una sola operación.
 2. **Es más Pythónico:** Python está optimizado para que las excepciones sean baratas. No es como en Java donde lanzar una excepción tiene un costo significativo.
 
 Dicho esto, no es una regla absoluta. Hay casos donde LBYL es más claro, especialmente cuando la verificación es simple y no hay riesgo de condiciones de carrera. Usen el sentido común.
@@ -441,7 +440,6 @@ class StockInsuficiente(TiendaError):
 
 ```python
 # servicio.py (versión simplificada)
-from __future__ import annotations
 from .excepciones import ProductoNoEncontrado, StockInsuficiente
 
 class Tienda:
@@ -572,7 +570,7 @@ Cada operación en su propio `try/except` es innecesariamente verboso. El códig
 
 ### El balance correcto
 
-Agrupen las operaciones que forman una **unidad lógica** y captur excepciones que tengan sentido como grupo:
+Agrupen las operaciones que forman una **unidad lógica** y capturen excepciones que tengan sentido como grupo:
 
 ```python
 try:
@@ -756,7 +754,7 @@ Poniéndolo todo junto, así se ve el flujo de excepciones en los proyectos del 
 │          if not self.campo:                                  │
 │              raise DatoInvalido("...")   ← LANZA            │
 └─────────────────────────────────────────────────────────────┘
-              │ hereda de
+              │ importa de
               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  excepciones.py (jerarquía de excepciones)                  │
@@ -776,7 +774,7 @@ Los **modelos** y **servicios** lanzan excepciones. El **main** las captura y de
 ## Preguntas para pensar
 
 1. ¿Por qué en los ejemplos del curso los servicios (`VendingMachine`, `TicketOffice`) lanzan excepciones pero nunca las capturan? ¿Quién debería capturarlas?
-2. Si tienen un `except Exception` que captura un `KeyboardInterrupt`, ¿eso es un problema? ¿Por qué sí o por qué no?
+2. ¿`except Exception` captura `KeyboardInterrupt`? Justifiquen mirando la jerarquía. ¿Qué diferencia hay entre `except Exception` y `except:` (sin tipo)?
 3. ¿Cuándo usarían `else` en un `try/except`? Den un ejemplo concreto.
 4. ¿Qué pasaría si la clase `StockInsuficiente` NO heredara de `ErrorDeDominio`? ¿Cómo afectaría al código que captura excepciones?
 5. En el patrón EAFP, ¿hay algún caso donde sea mejor verificar primero (LBYL)? ¿Cuál?
